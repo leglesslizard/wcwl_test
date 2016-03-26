@@ -21,29 +21,38 @@ PHP
 
 	# Delete unneeded default themes and plugins
 	wp plugin delete --allow-root --quiet hello
-	wp plugin delete --allow-root --quiet jetpack
+	wp plugin delete --allow-root --quiet akismet
 	wp theme delete --allow-root --quiet twentyfifteen
-	wp theme delete --allow-root --quiet twentysixteen
+	wp theme delete --allow-root --quiet twentyfourteen
 
 	# Get any plugins that are needed for development
-	wp plugin install --allow-root --quiet query-monitor --activate
-	wp plugin install --allow-root --quiet debug-bar --activate
-	wp plugin install --allow-root --quiet user-switching --activate
-	wp plugin install --allow-root --quiet easy-wp-smtp --activate
+	wp plugin install --allow-root --quiet query-monitor
+	wp plugin install --allow-root --quiet debug-bar
+	wp plugin install --allow-root --quiet user-switching
+	wp plugin install --allow-root --quiet easy-wp-smtp
 
 	# Update options
 	wp option update --allow-root --quiet blogdescription ''
 	wp option update --allow-root --quiet start_of_week 1
 	wp option update --allow-root --quiet timezone_string 'Europe/London'
 	wp option update --allow-root --quiet permalink_structure '/%postname%/'
-	wp option update --allow-root wp_smtp_options --format=json < smtp.config
+	wp option update --allow-root wp_smtp_options < ../smtp.config
 
+	# Grab WooCommerce and Waitlist
+	cd wp-content/plugins
+	#git clone git@github.com:woothemes/woocommerce.git
+	#git clone git@github.com:woothemes/woocommerce-waitlist.git
+	wp plugin activate --allow-root --all
+	cd ../../..
 fi
 
-# Run Composer
-echo "Running Composer to download dependencies"
-composer install --prefer-dist
+# Update everything
+cd htdocs
+wp core update --allow-root
+wp plugin update --allow-root --all
+wp theme update --allow-root --all
+
+cd ..
 
 # The Vagrant site setup script will restart Nginx for us
-
 echo "Waitlist Testing site now installed";
