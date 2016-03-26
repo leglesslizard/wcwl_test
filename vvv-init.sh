@@ -17,13 +17,7 @@ then
 	wp core config --allow-root --quiet --dbname="wcwl_test" --dbuser=wp --dbpass=wp --dbhost="localhost" <<PHP
 define( 'WP_DEBUG', true );
 PHP
-	wp core install --allow-root --quiet --url=wcwl_test.dev --title="Waitlist Testing" --admin_user="mattbanks" --admin_password="password" --admin_email="matt@collectivthkg.com"
-
-	# Update options
-	wp option update --allow-root --quiet blogdescription ''
-	wp option update --allow-root --quiet start_of_week 1
-	wp option update --allow-root --quiet timezone_string 'Europe/London'
-	wp option update --allow-root --quiet permalink_structure '/%postname%/'
+	wp core install --allow-root --quiet --url=wcwl_test.dev --title="Waitlist Testing" --admin_user="admin" --admin_password="password" --admin_email="admin@local.dev"
 
 	# Delete unneeded default themes and plugins
 	wp plugin delete --allow-root --quiet hello
@@ -35,6 +29,14 @@ PHP
 	wp plugin install --allow-root --quiet query-monitor --activate
 	wp plugin install --allow-root --quiet debug-bar --activate
 	wp plugin install --allow-root --quiet user-switching --activate
+	wp plugin install --allow-root --quiet easy-wp-smtp --activate
+
+	# Update options
+	wp option update --allow-root --quiet blogdescription ''
+	wp option update --allow-root --quiet start_of_week 1
+	wp option update --allow-root --quiet timezone_string 'Europe/London'
+	wp option update --allow-root --quiet permalink_structure '/%postname%/'
+	wp option update --allow-root wp_smtp_options --format=json < smtp.config
 
 fi
 
