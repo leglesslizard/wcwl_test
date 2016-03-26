@@ -1,0 +1,43 @@
+{
+    "name": "pie/wcwl_test",
+    "description": "VVV Install for Waitlist Testing",
+    "authors": [
+        {
+            "name": "PIE",
+            "homepage": "http://pie.co.de"
+        }
+    ],
+    "type": "project",
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://wpackagist.org"
+        },
+        {
+            "type": "vcs",
+            "url": "git@bitbucket.org:woothemes/woocommerce.git"
+        },
+        {
+          "type": "vcs",
+          "url": "git@bitbucket.org:woothemes/woocommerce-waitlist.git"
+        }
+    ],
+    "config": {
+        "vendor-dir": "htdocs/wp-content/vendor"
+    },
+    "require": {
+      "woothemes/woocommerce": "",
+      "woothemes/woocommerce-waitlist": ""
+    },
+    "extra": {
+        "wordpress-install-dir": "htdocs/",
+        "installer-paths": {
+            "public_html/wp-content/plugins/{$name}/": [
+                "type:wordpress-plugin"
+            ],
+            "public_html/wp-content/themes/{$name}/": [
+                "type:wordpress-theme"
+            ]
+        }
+    }
+}
