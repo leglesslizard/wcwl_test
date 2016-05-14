@@ -19,37 +19,38 @@ define( 'WP_DEBUG', true );
 PHP
 	wp core install --allow-root --quiet --url=wcwl_test.dev --title="Waitlist Testing" --admin_user="admin" --admin_password="password" --admin_email="admin@local.dev"
 
-	# Delete unneeded default themes and plugins
-	wp plugin delete --allow-root --quiet hello
-	wp plugin delete --allow-root --quiet akismet
-	wp theme delete --allow-root --quiet twentyfifteen
-	wp theme delete --allow-root --quiet twentyfourteen
-
 	# Get any plugins that are needed for development
 	wp plugin install --allow-root --quiet query-monitor
 	wp plugin install --allow-root --quiet debug-bar
 	wp plugin install --allow-root --quiet user-switching
-	wp plugin install --allow-root --quiet easy-wp-smtp
+	# If easy wp smtp plugin is needed
+	# wp plugin install --allow-root --quiet easy-wp-smtp
 
 	# Update options
 	wp option update --allow-root --quiet blogdescription ''
 	wp option update --allow-root --quiet start_of_week 1
 	wp option update --allow-root --quiet timezone_string 'Europe/London'
 	wp option update --allow-root --quiet permalink_structure '/%postname%/'
-	wp option update --allow-root wp_smtp_options < ../smtp.config
+	# If easy wp smtp plugin is needed - edit smtp.config as required or
+	# leave commented out and update manually in wordpress after install
+	# wp option update --allow-root wp_smtp_options < ../smtp.config
 
 	# Grab WooCommerce and Waitlist
 	cd wp-content/plugins
-	#git clone git@github.com:woothemes/woocommerce.git
-	#git clone git@github.com:woothemes/woocommerce-waitlist.git
+	git clone git@github.com:woothemes/woocommerce.git
+	git clone git@github.com:woothemes/woocommerce-waitlist.git
 	wp plugin activate --allow-root --all
 	cd ../../..
 fi
 
-# Update everything
+# Update all the things. I don't update woocommerce/waitlist as I chop and change these with git
+# while testing
 cd htdocs
 wp core update --allow-root
-wp plugin update --allow-root --all
+wp plugin update --allow-root query-monitor
+wp plugin update --allow-root debug-bar
+wp plugin update --allow-root user-switching
+wp plugin update --allow-root easy-wp-smtp
 wp theme update --allow-root --all
 
 cd ..
